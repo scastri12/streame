@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from "./../../../shared/components/header/header.component";
 import { CommonModule } from '@angular/common';
+import { SpotifyService } from "./../../../shared/services/spotify.service";
 
 @Component({
   selector: 'app-item-list',
@@ -12,9 +13,10 @@ import { CommonModule } from '@angular/common';
 })
 export class ItemListComponent implements OnInit {
 
-  constructor() { }
+  constructor( private spotifyService: SpotifyService) { }
 
   ngOnInit(): void {
+    this.spotifyService.getItem();
   }
 
 }
