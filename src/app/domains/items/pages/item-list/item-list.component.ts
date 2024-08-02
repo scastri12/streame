@@ -24,7 +24,7 @@ export class ItemListComponent implements OnInit {
     this.urlParams = new URLSearchParams(window.location.search);
     this.code = this.urlParams.get('code');
     await this.getToken(this.code);
-    this.spotifyService.getItem("busca").subscribe( (data: any) => {
+    this.spotifyService.getNewReleases().subscribe( (data: any) => {
       console.log("data: ", data);
       this.itemList = data.albums.items;
     });
