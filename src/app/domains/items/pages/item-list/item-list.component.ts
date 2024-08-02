@@ -2,13 +2,14 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from './../../../shared/components/header/header.component';
 import { CommonModule } from '@angular/common';
 import { SpotifyService } from './../../../shared/services/spotify.service';
+import { ItemComponent } from '../../components/item/item.component';
 
 @Component({
   selector: 'app-item-list',
   templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.css'],
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent, ItemComponent],
 })
 export class ItemListComponent implements OnInit {
   urlParams: any;

@@ -9,7 +9,6 @@ import { ItemComponent } from './domains/items/components/item/item.component';
 @NgModule({
   declarations: [
     AppComponent,
-    ItemComponent,
   ],
   imports: [
     BrowserModule,
