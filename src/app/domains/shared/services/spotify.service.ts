@@ -6,16 +6,18 @@ import { Injectable } from '@angular/core';
 })
 export class SpotifyService {
 
-  url = "https://api.spotify.com/v1/browse/new-releases";
-  authorization = 'Bearer BQBVxmEPYe6wXX7RQBv3zdO0NRqqhmNci8GcCrO6M3bwgGIRsluG021rfObIGYiqLi1g17ONWytttJ1WvQt0InPzg2IJ3U6XEoSDTyJvu7u1I4OKbZc';
+  url = "https://api.spotify.com/v1/search?q=";
+  authorization = 'Bearer ' + localStorage.getItem('access_token');
 
   constructor(private http: HttpClient) {}
 
-  getItem() {
+  getItem(search: string) {
+    this.authorization = 'Bearer ' + localStorage.getItem('access_token');
+    console.log("auth: ", localStorage.getItem('access_token'));
     const headers = new HttpHeaders({
       'Authorization': this.authorization
     });
-    this.http.get(this.url, { headers }).subscribe( data => {
+    this.http.get(this.url + search + "&type=track,artist,album", { headers }).subscribe( data => {
       console.log("data: ", data);
     });
 

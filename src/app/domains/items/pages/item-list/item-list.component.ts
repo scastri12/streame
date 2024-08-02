@@ -17,11 +17,11 @@ export class ItemListComponent implements OnInit {
 
   constructor(private spotifyService: SpotifyService) {}
 
-  ngOnInit(): void {
-    this.spotifyService.getItem();
+  async ngOnInit(): Promise<void> {
     this.urlParams = new URLSearchParams(window.location.search);
     this.code = this.urlParams.get('code');
-    this.getToken(this.code);
+    await this.getToken(this.code);
+    this.spotifyService.getItem("busca");
   }
 
   getToken = async (code: string) => {
@@ -47,5 +47,6 @@ export class ItemListComponent implements OnInit {
     const response = await body.json();
 
     localStorage.setItem('access_token', response.access_token);
+    console.log('authv1: ', localStorage.getItem('access_token'));
   };
 }
