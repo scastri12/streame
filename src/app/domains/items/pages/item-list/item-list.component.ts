@@ -13,7 +13,7 @@ import { ItemComponent } from '../../components/item/item.component';
 })
 export class ItemListComponent implements OnInit {
   urlParams: any;
-  code: string = '';
+  code!: string;
   codeVerifier: any;
 
   itemList: any[] = [];
@@ -21,11 +21,15 @@ export class ItemListComponent implements OnInit {
   constructor(private spotifyService: SpotifyService) {}
 
   async ngOnInit(): Promise<void> {
-    this.urlParams = new URLSearchParams(window.location.search);
-    this.code = this.urlParams.get('code');
-    await this.getToken(this.code);
-    this.spotifyService.getNewReleases().subscribe( (data: any) => {
-      console.log("data: ", data);
+    console.log('local: ', localStorage.getItem('access_token'));
+
+    if (localStorage.getItem('access_token') === null || localStorage.getItem('access_token') === 'undefined') {
+      this.urlParams = new URLSearchParams(window.location.search);
+      this.code = this.urlParams.get('code');
+      await this.getToken(this.code);
+    }
+    this.spotifyService.getNewReleases().subscribe((data: any) => {
+      console.log('data: ', data);
       this.itemList = data.albums.items;
     });
   }

@@ -1,19 +1,44 @@
 <div class="row m-5">
-    <div class="col-2">
-        <img [src]="artist.images[0].url" alt="" class="img-thumbnail img-circle">
-    </div>
+  <div class="col-2">
+    <img [src]="artist.images[0].url" alt="" class="img-thumbnail img-circle" />
+  </div>
+  <div class="col">
+    <h3>{{ artist.name }}</h3>
+    <p>
+      <a [href]="artist.external_urls.spotify" target="_blank">
+        Go to the artist's page
+      </a>
+    </p>
+  </div>
+  <div class="col-4 text-right">
+    <button routerLink="/search" class="btn btn-outline-danger">Back</button>
+  </div>
+</div>
+
+<div class="row m-5">
     <div class="col">
-        <h3>{{ artist.name }}</h3>
-        <p>
-            <a [href]="artist.external_urls.spotify" target="_blank">
-                Go to the artist's page
-            </a>
-        </p>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Photo</th>
+                    <th>Album</th>
+                    <th>Track</th>
+                    <th>Preview</th>                   
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let track of topTracks">
+                    <td>
+                        <img [src]="track.album.images[0].url" alt="trackImg" class="img-thumb">
+                    </td>
+                    <td>{{ track.album.name }}</td>
+                    <td>{{ track.name }}</td>
+                    <td>
+                        <audio [src]="track.preview_url" controls></audio>
+                    </td>
+                </tr>
+            </tbody>
 
-    </div>
-    <div class="col-4 text-right">
-        <button class="btn btn-outline-danger">Back</button>
-
-
+        </table>
     </div>
 </div>
