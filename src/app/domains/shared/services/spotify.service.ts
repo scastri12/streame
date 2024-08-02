@@ -17,9 +17,7 @@ export class SpotifyService {
     const headers = new HttpHeaders({
       'Authorization': this.authorization
     });
-    this.http.get(this.url + search + "&type=track,artist,album", { headers }).subscribe( data => {
-      console.log("data: ", data);
-    });
+    return this.http.get(this.url + search + "&type=track,artist,album", { headers });
 
   }
 }

@@ -15,13 +15,18 @@ export class ItemListComponent implements OnInit {
   code: string = '';
   codeVerifier: any;
 
+  itemList: any[] = [];
+
   constructor(private spotifyService: SpotifyService) {}
 
   async ngOnInit(): Promise<void> {
     this.urlParams = new URLSearchParams(window.location.search);
     this.code = this.urlParams.get('code');
     await this.getToken(this.code);
-    this.spotifyService.getItem("busca");
+    this.spotifyService.getItem("busca").subscribe( (data: any) => {
+      console.log("data: ", data);
+      this.itemList = data.albums.items;
+    });
   }
 
   getToken = async (code: string) => {
