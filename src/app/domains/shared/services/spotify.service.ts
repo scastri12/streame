@@ -24,7 +24,7 @@ export class SpotifyService {
     const headers = new HttpHeaders({
       'Authorization': 'Bearer ' + localStorage.getItem('access_token')
     });
-    return this.http.get(this.url + search + "&type=track,artist,album", { headers });
+    return this.http.get(this.url + search + "&type=track,artist,album&limit=5", { headers });
 
   }
 

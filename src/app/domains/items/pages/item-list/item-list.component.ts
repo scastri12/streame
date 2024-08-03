@@ -17,6 +17,8 @@ export class ItemListComponent implements OnInit {
   codeVerifier: any;
 
   itemList: any[] = [];
+  imgList: any[] = [];
+
 
   constructor(private spotifyService: SpotifyService) {}
 
@@ -28,10 +30,27 @@ export class ItemListComponent implements OnInit {
       this.code = this.urlParams.get('code');
       await this.getToken(this.code);
     }
-    this.spotifyService.getNewReleases().subscribe((data: any) => {
-      console.log('data: ', data);
-      this.itemList = data.albums.items;
+    this.spotifyService.getNewReleases().subscribe({
+      next: (data: any) => {
+        console.log('data: ', data);
+        this.itemList = data.albums.items;
+        this.itemList.forEach(item => {
+          this.imgList.push(item.images[0].url);
+        });
+      },
+      error: async (err) => {
+        console.error('An error occurred while fetching new releases', err);
+        // Aquí puedes manejar el error de manera apropiada
+        this.urlParams = new URLSearchParams(window.location.search);
+      this.code = this.urlParams.get('code');
+      await this.getToken(this.code);
+        
+      },
+      complete: () => {
+        console.log('Data fetching complete');
+      }
     });
+    
   }
 
   getToken = async (code: string) => {

@@ -3,5 +3,5 @@
     <div class="col">
         <input #term type="text" (keyup)="search(term.value)" class="form-control" placeholder="Search...">
     </div>
-    <app-item [items]="itemList"></app-item>
+    <app-item [items]="itemList" [imgList]="imgList"></app-item>
 </div>
