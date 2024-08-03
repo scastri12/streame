@@ -2,31 +2,55 @@ import { Component, OnInit } from '@angular/core';
 import { HeaderComponent } from './../../../shared/components/header/header.component';
 import { CommonModule } from '@angular/common';
 import { SpotifyService } from './../../../shared/services/spotify.service';
+import { ItemComponent } from '../../components/item/item.component';
 
 @Component({
   selector: 'app-item-list',
   templateUrl: './item-list.component.html',
   styleUrls: ['./item-list.component.css'],
   standalone: true,
-  imports: [CommonModule, HeaderComponent],
+  imports: [CommonModule, HeaderComponent, ItemComponent],
 })
 export class ItemListComponent implements OnInit {
   urlParams: any;
-  code: string = '';
+  code!: string;
   codeVerifier: any;
 
   itemList: any[] = [];
+  imgList: any[] = [];
+
 
   constructor(private spotifyService: SpotifyService) {}
 
   async ngOnInit(): Promise<void> {
-    this.urlParams = new URLSearchParams(window.location.search);
-    this.code = this.urlParams.get('code');
-    await this.getToken(this.code);
-    this.spotifyService.getItem("busca").subscribe( (data: any) => {
-      console.log("data: ", data);
-      this.itemList = data.albums.items;
+    console.log('local: ', localStorage.getItem('access_token'));
+
+    if (localStorage.getItem('access_token') === null || localStorage.getItem('access_token') === 'undefined') {
+      this.urlParams = new URLSearchParams(window.location.search);
+      this.code = this.urlParams.get('code');
+      await this.getToken(this.code);
+    }
+    this.spotifyService.getNewReleases().subscribe({
+      next: (data: any) => {
+        console.log('data: ', data);
+        this.itemList = data.albums.items;
+        this.itemList.forEach(item => {
+          this.imgList.push(item.images[0].url);
+        });
+      },
+      error: async (err) => {
+        console.error('An error occurred while fetching new releases', err);
+        // Aquí puedes manejar el error de manera apropiada
+        this.urlParams = new URLSearchParams(window.location.search);
+      this.code = this.urlParams.get('code');
+      await this.getToken(this.code);
+        
+      },
+      complete: () => {
+        console.log('Data fetching complete');
+      }
     });
+    
   }
 
   getToken = async (code: string) => {
